@@ -4,7 +4,7 @@ const Navbar = () => {
     return (
         <nav style={{
             padding: "1rem 2rem",
-            background: "#1E90FF",
+            backgroundColor: "#1E90FF",
             color: "white",
             display: "flex",
             gap: "1rem",

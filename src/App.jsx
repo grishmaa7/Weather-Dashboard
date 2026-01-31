@@ -1,9 +1,9 @@
 import { Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Cities from "./pages/Cities";
 import WeatherDetails from "./pages/WeatherDetails";
 import Settings from "./pages/Settings";
-import Navbar from "./components/Navbar";
 
 function App() {
   return (

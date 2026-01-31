@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { getWeatherByCity } from "../services/weatherService";
 import { TemperatureUnitContext } from "../context/TemperatureUnitContext";
 
@@ -9,22 +9,29 @@ const WeatherDetails = () => {
     const [weather, setWeather] = useState(null);
 
     useEffect(() => {
-        const fetchWeather = async () => {
-            const data = await getWeatherByCity(city, unit === "C" ? "metric" : "imperial");
-            setWeather(data);
-        };
-        fetchWeather();
-    }, [city, unit]);
+        getWeatherByCity(city).then((data) => setWeather(data));
+    }, [city]);
 
-    if (!weather) return <p>Loading weather data...</p>;
+    if (!weather) return <p style={{ padding: "2rem" }}>Loading weather details...</p>;
+
+    const temp = unit === "C" ? weather.current.temp_c : weather.current.temp_f;
+    const wind = unit === "C" ? weather.current.wind_kph : weather.current.wind_mph;
 
     return (
-        <div style={{ padding: "2rem" }}>
-            <h1>Weather in {city}</h1>
-            <p>Temperature: {weather.main.temp}°{unit}</p>
-            <p>Weather: {weather.weather[0].description}</p>
-            <p>Humidity: {weather.main.humidity}%</p>
-            <p>Wind: {weather.wind.speed} {unit === "C" ? "m/s" : "mph"}</p>
+        <div style={{
+            padding: "2rem",
+            maxWidth: "400px",
+            margin: "2rem auto",
+            backgroundColor: "#fff",
+            borderRadius: "10px",
+            boxShadow: "0 0 10px rgba(0,0,0,0.1)"
+        }}>
+            <h2>Weather in {city}</h2>
+            <p>Temperature: {temp}°{unit}</p>
+            <p>Condition: {weather.current.condition.text}</p>
+            <p>Humidity: {weather.current.humidity}%</p>
+            <p>Wind: {wind} {unit === "C" ? "kph" : "mph"}</p>
+            <img src={weather.current.condition.icon} alt="weather icon" />
         </div>
     );
 };
