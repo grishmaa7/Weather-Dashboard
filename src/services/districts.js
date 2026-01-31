@@ -6,5 +6,12 @@ export const districts = [
     "Biratnagar",
     "Birgunj",
     "Nepalgunj",
-    "Dhangadhi"
+    "Dhangadhi",
+    "Janakpur",
+    "Hetauda",
+    "Itahari",
+    "Butwal",
+    "Bharatpur",
+    "Tulsipur",
+    "Jomsom"
 ];

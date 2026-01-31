@@ -5,10 +5,10 @@ const Settings = () => {
     const { unit, toggleUnit } = useContext(TemperatureUnitContext);
 
     return (
-        <div style={{ padding: "2rem" }}>
-            <h1>Settings</h1>
+        <div className="settings-container">
+            <h1>Settings 🛠️</h1>
             <p>Preferred Temperature Unit: {unit}</p>
-            <button onClick={toggleUnit} style={{ marginTop: "1rem", padding: "0.5rem 1rem" }}>
+            <button onClick={toggleUnit}>
                 Switch to {unit === "C" ? "°F" : "°C"}
             </button>
         </div>

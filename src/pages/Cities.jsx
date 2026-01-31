@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { getWeatherByCity } from "../services/weatherService";
 import { districts } from "../services/districts";
+import { TemperatureUnitContext } from "../context/TemperatureUnitContext";
 
 const Cities = () => {
+    const { unit } = useContext(TemperatureUnitContext);
     const [weatherData, setWeatherData] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -20,27 +22,24 @@ const Cities = () => {
         fetchAllWeather();
     }, []);
 
-    if (loading) return <p style={{ padding: "2rem" }}>Loading all cities weather...</p>;
+    if (loading) return <p style={{ padding: "2rem", textAlign: "center" }}>Loading all cities weather...</p>;
 
     return (
-        <div style={{ padding: "2rem" }}>
-            <h1>Weather in All Cities</h1>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(200px,1fr))", gap: "1rem", marginTop: "1rem" }}>
-                {weatherData.map((weather) => (
-                    <div key={weather.location.name} style={{
-                        padding: "1rem",
-                        backgroundColor: "#fff",
-                        borderRadius: "10px",
-                        boxShadow: "0 0 10px rgba(0,0,0,0.1)",
-                        textAlign: "center"
-                    }}>
+        <div className="cities-grid">
+            {weatherData.map((weather) => {
+                const temp = unit === "C" ? weather.current.temp_c : weather.current.temp_f;
+                const wind = unit === "C" ? weather.current.wind_kph : weather.current.wind_mph;
+
+                return (
+                    <div key={weather.location.name} className="city-card">
                         <h3>{weather.location.name}</h3>
                         <img src={weather.current.condition.icon} alt="weather icon" />
-                        <p>{weather.current.temp_c}°C</p>
+                        <p>{temp}°{unit}</p>
                         <p>{weather.current.condition.text}</p>
+                        <p>Wind: {wind} {unit === "C" ? "kph" : "mph"}</p>
                     </div>
-                ))}
-            </div>
+                );
+            })}
         </div>
     );
 };

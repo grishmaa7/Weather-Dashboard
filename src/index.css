@@ -1,33 +1,172 @@
-/* Global resets */
+/* ===== GLOBAL RESET & BASE STYLING ===== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Poppins', sans-serif;
+  /* cute font */
 }
 
 body {
-  background-color: #f0f8ff;
-  color: #333;
+  background-color: #FDE2FF;
+  /* soft lavender-pink background */
+  color: #4B0082;
+  /* dark purple text for contrast */
 }
 
+/* Links */
 a {
   text-decoration: none;
+  transition: color 0.3s;
 }
 
+a:hover {
+  color: #FFB6C1;
+  /* light pink hover */
+}
+
+/* Buttons */
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 12px;
+  background-color: #FFB6C1;
+  /* pastel pink */
+  color: white;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(255, 182, 193, 0.4);
+}
+
+button:hover {
+  background-color: #FF69B4;
+  /* brighter pink */
+  transform: scale(1.05);
+}
+
+/* Headings */
+h1,
+h2,
+h3 {
+  color: #8A2BE2;
+  /* lavender purple */
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+/* Lists */
 ul {
   list-style: none;
 }
 
-button {
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  background-color: #1E90FF;
+/* ===== NAVBAR ===== */
+nav {
+  padding: 1rem 2rem;
+  background: linear-gradient(90deg, #FFB6C1, #D8BFD8);
+  /* pink to lavender */
   color: white;
-  transition: background-color 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #FF69B4;
+  border-radius: 0 0 15px 15px;
 }
 
-button:hover {
-  background-color: #187bcd;
+nav h2 {
+  margin: 0;
+  font-family: 'Comic Sans MS', cursive;
+  /* cute font */
+}
+
+nav a {
+  color: white;
+  font-weight: 500;
+  margin-left: 1rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 10px;
+  transition: background 0.3s, color 0.3s;
+}
+
+nav a:hover {
+  background-color: #FFC0CB;
+  /* pastel hover */
+  color: #8A2BE2;
+}
+
+/* ===== CITIES GRID ===== */
+.cities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.city-card {
+  padding: 1rem;
+  background-color: #FFF0F5;
+  /* lavender blush */
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(255, 182, 193, 0.3);
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.city-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(255, 182, 193, 0.5);
+}
+
+.city-card img {
+  margin: 0.5rem 0;
+  width: 80px;
+  height: 80px;
+}
+
+/* ===== WEATHER DETAILS CARD ===== */
+.weather-card {
+  padding: 2rem;
+  max-width: 400px;
+  margin: 2rem auto;
+  background-color: #FFE4F9;
+  /* very soft pink */
+  border-radius: 20px;
+  box-shadow: 0 8px 16px rgba(255, 182, 193, 0.4);
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.weather-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 20px rgba(255, 182, 193, 0.5);
+}
+
+.weather-card img {
+  margin: 0.5rem 0;
+  width: 100px;
+  height: 100px;
+}
+
+/* ===== HOME PAGE ===== */
+.home-container {
+  padding: 2rem;
+  text-align: center;
+}
+
+.home-container p {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  color: #8A2BE2;
+}
+
+/* ===== SETTINGS PAGE ===== */
+.settings-container {
+  padding: 2rem;
+  text-align: center;
+}
+
+.settings-container p {
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+  color: #8A2BE2;
 }
