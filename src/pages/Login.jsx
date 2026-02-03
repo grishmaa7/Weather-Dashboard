@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { FaFacebook } from "react-icons/fa";
+
 import { Link, useNavigate } from "react-router-dom";
 import {
     signInWithEmailAndPassword,
@@ -85,9 +85,7 @@ const Login = () => {
                     <FcGoogle size={20} /> Continue with Google
                 </button>
 
-                <button style={styles.facebookBtn} onClick={handleFacebookLogin}>
-                    <FaFacebook size={18} /> Continue with Facebook
-                </button>
+               
 
                 <p style={styles.footerText}>
                     Don’t have an account?{" "}

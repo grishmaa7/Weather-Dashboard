@@ -1,54 +1,38 @@
-import React, { useState } from "react";
+import React from "react";
 import { FcGoogle } from "react-icons/fc";
-
 import { Link, useNavigate } from "react-router-dom";
-
 import {
     GoogleAuthProvider,
-    FacebookAuthProvider,
     createUserWithEmailAndPassword,
     signInWithPopup,
 } from "firebase/auth";
-//react hook form import
-import {
-    useForm,
-} from "react-hook-form";
-
+import { useForm } from "react-hook-form";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../components/config/firebase";
 
 const googleProvider = new GoogleAuthProvider();
 
-
 const Register = () => {
     const navigate = useNavigate();
+
     const {
         register,
-        handeSubmit,
+        handleSubmit,
         formState: { errors },
     } = useForm({ mode: "onChange" });
 
-
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
-        console.log(form.name)
-        console.log(form.email)
-        console.log(form.password)
-    };
-
-    const handleRegister = async () => {
+    // Email + Password Register
+    const handleRegister = async (data) => {
         try {
             const res = await createUserWithEmailAndPassword(
                 auth,
-                form.email,
-                form.password
+                data.email,
+                data.password
             );
 
             await setDoc(doc(db, "users", res.user.uid), {
                 uid: res.user.uid,
-                name: form.name,
+                name: data.name,
                 email: res.user.email,
                 provider: "email",
                 createdAt: new Date(),
@@ -60,11 +44,11 @@ const Register = () => {
         }
     };
 
+    // Google Register
     const signInWithGoogle = async () => {
         try {
             const res = await signInWithPopup(auth, googleProvider);
             const user = res.user;
-            console.log(user);
 
             await setDoc(
                 doc(db, "users", user.uid),
@@ -85,62 +69,63 @@ const Register = () => {
         }
     };
 
-
-
-
-
-
-
     return (
         <div style={styles.wrapper}>
             <div style={styles.card}>
                 <h2 style={styles.title}>Create account</h2>
                 <p style={styles.subtitle}>Join us and start shopping</p>
-                <form onSubmit={handleSubmit}>
-                    <input
 
+                <form onSubmit={handleSubmit(handleRegister)}>
+                    <input
                         placeholder="Full name"
                         style={styles.input}
-                        {...register("name", { required: "please enter your name" })}
+                        {...register("name", { required: "Please enter your name" })}
                     />
-                    {errors.name && <p style={{ color: "red", fontSize: "12px", textAlign: "left", marginTop: "-10px", marginBottom: "10px" }}>{errors.name.message}</p>}
+                    {errors.name && <p style={styles.error}>{errors.name.message}</p>}
 
                     <input
-
                         placeholder="Email address"
                         style={styles.input}
                         {...register("email", {
-                            required: "please enter your email",
+                            required: "Please enter your email",
                             pattern: {
                                 value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                message: "Please enter a valid email address"
-                            }
+                                message: "Please enter a valid email",
+                            },
                         })}
                     />
-                    {errors.email && <p style={{ color: "red", fontSize: "12px", textAlign: "left", marginTop: "-10px", marginBottom: "10px" }}>{errors.email.message}</p>}
+                    {errors.email && <p style={styles.error}>{errors.email.message}</p>}
 
                     <input
-
+                        type="password"
                         placeholder="Password"
                         style={styles.input}
-                        {...register("password", { required: "please enter your password", minLength: { value: 8, message: "Password must be at least 8 characters long", pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/, message: "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character" } } })}
+                        {...register("password", {
+                            required: "Please enter your password",
+                            minLength: {
+                                value: 8,
+                                message: "Password must be at least 8 characters",
+                            },
+                        })}
                     />
-                    {errors.password && <p style={{ color: "red", fontSize: "12px", textAlign: "left", marginTop: "-10px", marginBottom: "10px" }}>{errors.password.message}</p>}
+                    {errors.password && (
+                        <p style={styles.error}>{errors.password.message}</p>
+                    )}
 
-                    <button style={styles.primaryBtn} onClick={handleRegister}>
+                    <button type="submit" style={styles.primaryBtn}>
                         Create account
                     </button>
 
-                    <div style={styles.divider}>
-                        <span>OR</span>
-                    </div>
+                    <div style={styles.divider}>OR</div>
 
-                    <button style={styles.googleBtn} onClick={signInWithGoogle}>
+                    <button
+                        type="button"
+                        style={styles.googleBtn}
+                        onClick={signInWithGoogle}
+                    >
                         <FcGoogle size={18} />
                         Continue with Google
                     </button>
-
-
 
                     <p style={styles.footerText}>
                         Already have an account?{" "}
@@ -156,6 +141,7 @@ const Register = () => {
 
 export default Register;
 
+// Styles
 const styles = {
     wrapper: {
         minHeight: "100vh",
@@ -164,7 +150,6 @@ const styles = {
         alignItems: "center",
         background: "linear-gradient(135deg, #f8fafc, #eef2ff)",
     },
-
     card: {
         width: "380px",
         padding: "28px",
@@ -173,19 +158,16 @@ const styles = {
         boxShadow: "0 20px 40px rgba(0,0,0,0.08)",
         textAlign: "center",
     },
-
     title: {
-        marginBottom: "4px",
         fontSize: "22px",
         fontWeight: "600",
+        marginBottom: "6px",
     },
-
     subtitle: {
-        marginBottom: "20px",
-        color: "#64748b",
         fontSize: "14px",
+        color: "#64748b",
+        marginBottom: "20px",
     },
-
     input: {
         width: "100%",
         height: "42px",
@@ -196,11 +178,9 @@ const styles = {
         fontSize: "14px",
         outline: "none",
     },
-
     primaryBtn: {
         width: "100%",
         height: "44px",
-        marginTop: "6px",
         background: "#2563eb",
         color: "#fff",
         border: "none",
@@ -209,16 +189,11 @@ const styles = {
         fontWeight: "600",
         fontSize: "15px",
     },
-
     divider: {
         margin: "18px 0",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        color: "#94a3b8",
         fontSize: "12px",
+        color: "#94a3b8",
     },
-
     googleBtn: {
         width: "100%",
         height: "42px",
@@ -231,19 +206,21 @@ const styles = {
         background: "#fff",
         cursor: "pointer",
         fontWeight: "500",
-        fontSize: "14px",
     },
-
-
     footerText: {
         marginTop: "16px",
         fontSize: "13px",
         color: "#475569",
     },
-
     link: {
         color: "#2563eb",
         fontWeight: "500",
         textDecoration: "none",
+    },
+    error: {
+        color: "red",
+        fontSize: "12px",
+        textAlign: "left",
+        marginBottom: "8px",
     },
 };
